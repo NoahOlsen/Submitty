@@ -1,1 +1,355 @@
 <h1>Twigs are linked,Hurray!</h1>
+<script>
+    var master = {
+        "testcases": {
+            "type": "array of objects",
+            "options": {
+                "types": {
+                    "type": "string",
+                    "value": ["Compilation", "Filecheck", "Execution"],
+                    "default value": "Execution"
+                },
+                "title": {
+                    "type": "string",
+                    "REQUIRED": true
+                },
+                "details": {
+                    "type": "string",
+                    "default value": ""
+                },
+                "points": {
+                    "type": "integer",
+                    "default value": 0
+                },
+                "hidden": {
+                    "type": "boolean",
+                    "default value": false
+                },
+                "extra credit": {
+                    "type": "boolean",
+                    "default value": false
+                },
+                "filename": {
+                    "type": "array of strings"
+                    // TODO: Implement REQUIRED for "file_check" and "execution" types using Javascript
+                },
+                "executable_name": {
+                    "type": "array of strings"
+                    // TODO: Implement REQUIRED for "compilation" testcases using Javascript
+                },
+                "command": {
+                    "type": "array of strings"
+                    // TODO: Implement REQUIRED for "compilation" and "execution" testcases. Not allowed for "file_check" testcases using Javascript
+                },
+                "resource_limits": {
+                    "type": "mapping from string to integer",
+                    "options": {
+                        "RLIMIT_CPU": {
+                            "type": "integer",
+                            "default value": 10
+                        },
+                        "RLIMIT_FSIZE": {
+                            "type": "integer",
+                            "default value": 100*1000
+                        },
+                        "RLIMIT_DATA": {
+                            "type": "integer",
+                            "default value": 500*1000*1000
+                        },
+                        "RLIMIT_STACK": {
+                            "type": "integer",
+                            "default value": 500*1000*1000
+                        },
+                        "RLIMIT_CORE": {
+                            "type": "integer",
+                            "default value": 0
+                        },
+                        "RLIMIT_RSS": {
+                            "type": "integer",
+                            "default value": 1*1000*1000*1000
+                        },
+                        "RLIMIT_NPROC": {
+                            "type": "integer",
+                            "default value": 0
+                        },
+                        "RLIMIT_NOFILE": {
+                            "type": "integer",
+                            "default value": 100
+                        },
+                        "RLIMIT_MEMLOCK": {
+                            "type": "integer",
+                            "default value": 500*1000*1000
+                        },
+                        "RLIMIT_AS": {
+                            "type": "integer",
+                            "default value": "RLIM_INFINITY"
+                        },
+                        "RLIMIT_LOCKS": {
+                            "type": "integer",
+                            "default value": 100
+                        },
+                        "RLIMIT_SIGPENDING": {
+                            "type": "integer",
+                            "default value": 0
+                        },
+                        "RLIMIT_MSGQUEUE": {
+                            "type": "integer",
+                            "default value": 0
+                        },
+                        "RLIMIT_NICE": {
+                            "type": "integer",
+                            "default value": "RLIM_INFINITY"
+                        },
+                        "RLIMIT_RTPRIO": {
+                            "type": "integer",
+                            "default value": 0
+                        },
+                        "RLIMIT_RTTIME": {
+                            "type": "integer",
+                            "default value": 0
+                        }
+                    }
+                },
+                "textboxes": {
+                    "type": "array of objects",
+                    "default value": [],
+                    "options": {
+                        "label": {
+                            "type": "string",
+                            "description of content": "String description of content of what to write in the textbox.",
+                            "default value": ""
+                        },
+                        "rows": {
+                            "type": "integer",
+                            "description of content": "Numeric height of the textbox in rows",
+                            "default value": 1
+                        },
+                        "filename": {
+                            "type": "string",
+                            "description of content": "String name of the text file generated by submission of the textbox. (ex. input1.txt)",
+                            "default value": ""
+                        },
+                        "images": {
+                            "type": "array of objects",
+                            "description of content": "list of the images to be displayed.",
+                            "default value": {},
+                            "options": {
+                                "image_name": {
+                                    "type": "string",
+                                    "description of content": "Name of the image file to be displayed.",
+                                    "default value": ""
+                                },
+                                "image_height": {
+                                    "type": "integer",
+                                    "description of content": "Numeric height in pixels to display the image at.",
+                                    "default value": 0
+                                },
+                                "image_width": {
+                                    "type": "integer",
+                                    "description of content": "Numeric width in pixels to display the image at.",
+                                    "default value": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                "validation": {
+                    "type": "array of objects",
+                    "default value": "",
+                    "options": {
+                        "method": {
+                            "type": "string",
+                            "options": {
+                                //TODO: Using Javascript validate These methods only require an "actual_file"
+                                "warnIfNotEmpty": {
+                                    "description of content": "Will throw a warning, but not cause the test to fail if the specified file is not empty"
+                                },
+                                "errorIfNotEmpty": {
+                                    "description of content": "Will cause the test to fail if the specified file is not empty"
+                                },
+                                "warnIfEmpty": {
+                                    "description of content": "Will throw a warning, but not cause the test to fail if the specified file is empty"
+                                },
+                                "errorIfEmpty": {
+                                    "description of content": "Will cause the test to fail if the specified file is empty"
+                                },
+                                //TODO: Using Javascript validate These methods require an "actual_file" and an "expected_file"
+                                "myersDiffbyLinebyWord": {
+                                    "description of content": "Runs the diff on a line by line basis focusing only on whole words being different"
+                                },
+                                "myersDiffbyLineNoWhite": {
+                                    "description of content": "Runs the diff ignoring white space?"
+                                },
+                                "myersDiffbyLine": {
+                                    "description of content": "Runs the diff on a line by line basis marking only the lines as different, not the exact contents that are different"
+                                },
+                                "myersDiffbyLinebyChar": {
+                                    "description of content": "Runs the diff on a line by line basis marking the exact characters that differ"
+                                },
+                                "myersDiffbyLinebyCharExtraStudentOutputOk": {
+                                    "description of content": "Same as the above diff, but ignores extra lines that are in the student’s output that aren’t in the expected output"
+                                },
+                                "diffLineSwapOk": {
+                                    "description of content": "Runs the diff, but allows the order of lines to be different between expected and the actual"
+                                },
+                                "ImageDiff": {
+                                    "description of content": "Runs a diff on two images (actual_file and expected_file)"
+                                },
+                                //TODO: Using Javascript validate These methods are for Java programs, and require only an "actual_file"
+                                "EmmaCoverageReportGrader": {
+                                    "description of content": "This uses the additional field coverage_threshold to compare against for test success"
+                                },
+                                "EmmaInstrumentationGrader": {
+                                    "description of content": ""
+                                },
+                                "JUnitTestGrader": {
+                                    "description of content": "This is for when running a test file directly through JUnit. The num_tests field should be defined as the expected number of JUnit tests to be run."
+                                },
+                                "MultipleJUnitTestGrader": {
+                                    "description of content": "This should used when using the provided TestRunner command which when passed a folder scans through and runs JUnit programmatically on files"
+                                }
+                            }
+                        },
+                        "description": {
+                            "type": "string",
+                            "default value": ""
+                        },
+                        "actual_file": {
+                            "type": "array of strings",
+                            "REQUIRED": true
+                        },
+                        "expected_file": {
+                            "type": "array of strings"
+                        },
+                        "deduction": {
+                            "type": "float"
+                        },
+                        "show_message": {
+                            "type": "string",
+                            "value": ["always", "never", "on_success", "on_failure"],
+                            "default value": "always"
+                        },
+                        "show_actual": {
+                            "type": "string",
+                            "value": ["always", "never", "on_success", "on_failure"],
+                            "default value": "always"
+                        },
+                        "show_expected": {
+                            "type": "string",
+                            "value": ["always", "never", "on_success", "on_failure"],
+                            "default value": "always"
+                        },
+                        "show_difference_image": {
+                            "type": "string",
+                            "value": ["always", "never", "on_success", "on_failure"],
+                            "default value": "always"
+                        },
+                        "acceptable_threshold": {
+                            "type": "float",
+                            "defaul value": 0
+                        },
+                        "failure_message": {
+                            "type": "string"
+                        }
+
+                    }
+                }
+
+            }
+        },
+        "assignment_message": {
+            "type": "string",
+            "default value": ""
+        },
+        "grading_parameters": {
+            "type": "mapping from string to integer",
+            "options": {
+                "AUTO_POINTS": {
+                    "type": "integer"
+                },
+                "EXTRA_CREDIT_POINTS": {
+                    "type": "integer"
+                }
+            }
+        },
+        "part_names": {
+            "type": "array of strings",
+            "default value": []
+        },
+        "resource_limits": {
+            "type": "mapping from string to integer",
+            "options": {
+                "RLIMIT_CPU": {
+                    "type": "integer",
+                    "default value": 10
+                },
+                "RLIMIT_FSIZE": {
+                    "type": "integer",
+                    "default value": 100*1000
+                },
+                "RLIMIT_DATA": {
+                    "type": "integer",
+                    "default value": 500*1000*1000
+                },
+                "RLIMIT_STACK": {
+                    "type": "integer",
+                    "default value": 500*1000*1000
+                },
+                "RLIMIT_CORE": {
+                    "type": "integer",
+                    "default value": 0
+                },
+                "RLIMIT_RSS": {
+                    "type": "integer",
+                    "default value": 1*1000*1000*1000
+                },
+                "RLIMIT_NPROC": {
+                    "type": "integer",
+                    "default value": 0
+                },
+                "RLIMIT_NOFILE": {
+                    "type": "integer",
+                    "default value": 100
+                },
+                "RLIMIT_MEMLOCK": {
+                    "type": "integer",
+                    "default value": 500*1000*1000
+                },
+                "RLIMIT_AS": {
+                    "type": "integer",
+                    "default value": "RLIM_INFINITY"
+                },
+                "RLIMIT_LOCKS": {
+                    "type": "integer",
+                    "default value": 100
+                },
+                "RLIMIT_SIGPENDING": {
+                    "type": "integer",
+                    "default value": 0
+                },
+                "RLIMIT_MSGQUEUE": {
+                    "type": "integer",
+                    "default value": 0
+                },
+                "RLIMIT_NICE": {
+                    "type": "integer",
+                    "default value": "RLIM_INFINITY"
+                },
+                "RLIMIT_RTPRIO": {
+                    "type": "integer",
+                    "default value": 0
+                },
+                "RLIMIT_RTTIME": {
+                    "type": "integer",
+                    "default value": 0
+                }
+            }
+        },
+        "allow_system_calls": {
+            "type": "array of strings",
+            "options": {
+                //TODO: HELP me with this
+            }
+        }
+    };
+</script>
