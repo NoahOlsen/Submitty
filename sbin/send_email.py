@@ -11,15 +11,27 @@ import smtplib
 import json
 import os
 import datetime
+import sys
 from sqlalchemy import create_engine, MetaData
 
+CONFIG_PATH = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        '..',
+        'config'
+)
 try:
-    CONFIG_PATH = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), '..', 'config')
-
     with open(os.path.join(CONFIG_PATH, 'database.json')) as open_file:
         DATABASE_CONFIG = json.load(open_file)
 
+    DB_HOST = DATABASE_CONFIG['database_host']
+    DB_USER = DATABASE_CONFIG['database_user']
+    DB_PASSWORD = DATABASE_CONFIG['database_password']
+except Exception as error:
+    print("[{}] Error: Database Configuration Failed {}".format(
+        str(datetime.datetime.now()), str(error)))
+    sys.exit(1)
+
+try:
     with open(os.path.join(CONFIG_PATH, 'email.json')) as open_file:
         EMAIL_CONFIG = json.load(open_file)
 
@@ -31,18 +43,18 @@ try:
     EMAIL_REPLY_TO = EMAIL_CONFIG['email_reply_to']
     EMAIL_LOG_PATH = EMAIL_CONFIG["email_logs_path"]
 
-    DB_HOST = DATABASE_CONFIG['database_host']
-    DB_USER = DATABASE_CONFIG['database_user']
-    DB_PASSWORD = DATABASE_CONFIG['database_password']
-
     TODAY = datetime.datetime.now()
-    LOG_FILE = open(os.path.join(
-        EMAIL_LOG_PATH, "{:04d}{:02d}{:02d}.txt".format(TODAY.year, TODAY.month,
-                                                        TODAY.day)), 'a')
+    LOG_FILE = open(
+        os.path.join(
+            EMAIL_LOG_PATH,
+            "{:04d}{:02d}{:02d}.txt".format(TODAY.year, TODAY.month, TODAY.day)
+        ),
+        'a'
+    )
 except Exception as config_fail_error:
-    print("[{}] Error: Email/Database Configuration Failed {}".format(
+    print("[{}] Error: Email Configuration Failed {}".format(
         str(datetime.datetime.now()), str(config_fail_error)))
-    exit(-1)
+    sys.exit()
 
 
 def setup_db():
