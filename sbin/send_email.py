@@ -52,8 +52,10 @@ try:
         'a'
     )
 except Exception as config_fail_error:
-    print("[{}] Error: Email Configuration Failed {}".format(
-        str(datetime.datetime.now()), str(config_fail_error)))
+    # Don't print anything as else cron will send an error email, even if
+    # it's just that we haven't (and potentially will never) configured email
+    # print("[{}] Error: Email Configuration Failed {}".format(
+    #    str(datetime.datetime.now()), str(config_fail_error)))
     sys.exit()
 
 
