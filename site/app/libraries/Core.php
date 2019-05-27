@@ -56,6 +56,9 @@ class Core {
     /** @var Router */
     private $router;
 
+    /** @var \Klein\Klein */
+    private $api_router;
+
     /**
      * Core constructor.
      *
@@ -518,6 +521,14 @@ class Core {
 
     public function getRouter(): Router {
         return $this->router;
+    }
+
+    public function setApiRouter(\Klein\Klein $router) {
+        $this->api_router = $router;
+    }
+
+    public function getApiRouter(): \Klein\Klein {
+        return $this->api_router;
     }
 
     /**
